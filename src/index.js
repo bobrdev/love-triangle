@@ -2,15 +2,10 @@
  * @param preferences - an array of integers. Indices of people, whom they love
  * @returns number of love triangles
  */
-module.exports = function getLoveTrianglesCount(preferences = []) {
-  // your implementation
+module.exports =  function getLoveTrianglesCount(preferences = []) {
   if( preferences.length <= 2 ) return 0;
 
-  function getLoveSpichoneeByPosition(position){
-    return preferences[position-1];
-  }
-
-  function isArrayValueDifferent (array){
+  function isArrayNumberDifferent (array){
     isAny = true;
     for (let i = 0; i < array.length; i++) {
       let tmp  = array[i]; 
@@ -39,28 +34,26 @@ module.exports = function getLoveTrianglesCount(preferences = []) {
 
   for (let index = 0; index < preferences.length; index++) {
     
-    firstSpichoneePosition = index + 1;
-    secondSpichoneePosition = preferences[index];
-    thirdSpichoneePosition = preferences[secondSpichoneePosition-1];
+    let posA = index + 1;
+    let posB = preferences[index];
+    let posC = preferences[posB-1];
 
+    let valA = preferences[index];
+    let valB = preferences[posB -1];
+    let valC = preferences[posC -1]; 
+
+    tmpSubArraySpichonees = [posA, posB, posC];
      
 
-    if( firstSpichoneePosition == getLoveSpichoneeByPosition(thirdSpichoneePosition) ){
-      let tmpSubArraySpichonees = [ firstSpichoneePosition, 
-                                    secondSpichoneePosition,
-                                    thirdSpichoneePosition ];
+    if( posA == preferences[posC-1] && 
+        isArrayNumberDifferent( [posA, posB, posC] ) && 
+        isArrayNumberDifferent( [valA, valB, valC] ) ){
 
-      let tmpSubArraySpichoneesVal = [ preferences[firstSpichoneePosition], 
-                                       preferences[secondSpichoneePosition],
-                                       preferences[thirdSpichoneePosition] ];
-            
-
-      if( !isTrianglesExist(arraySpichonees, tmpSubArraySpichonees) && isArrayValueDifferent(tmpSubArraySpichoneesVal) && isArrayValueDifferent(tmpSubArraySpichonees)  ){
-        arraySpichonees.push( [firstSpichoneePosition, 
-                              secondSpichoneePosition,
-                              thirdSpichoneePosition ] );
+      if( !isTrianglesExist(arraySpichonees, tmpSubArraySpichonees) ){
+        arraySpichonees.push( tmpSubArraySpichonees );
         countTriangles++;
       }
+
     }
   }
   return countTriangles;
